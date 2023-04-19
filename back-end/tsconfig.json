@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "module": "Node16",
+    },
+    "ts-node": {
+        "esm": true
+    }
+}

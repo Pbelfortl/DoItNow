@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model divisao {
+  id        Int      @id(map: "divisao_pk") @default(autoincrement())
+  name      String   @unique @db.VarChar
+  descricao String
+  days      Int
+  treino    treino[]
+}
+
+model exercicio {
+  id                                Int         @id(map: "exercicio_pk") @default(autoincrement())
+  name                              String      @unique @db.VarChar(255)
+  musculaturaId                     Int
+  video                             String
+  musculatura                       musculatura @relation(fields: [musculaturaId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "exercicio_fk0")
+  grupo_grupo_exercicio1Toexercicio grupo[]     @relation("grupo_exercicio1Toexercicio")
+  grupo_grupo_exercicio2Toexercicio grupo[]     @relation("grupo_exercicio2Toexercicio")
+  grupo_grupo_exercicio3Toexercicio grupo[]     @relation("grupo_exercicio3Toexercicio")
+  grupo_grupo_exercicio4Toexercicio grupo[]     @relation("grupo_exercicio4Toexercicio")
+  grupo_grupo_exercicio5Toexercicio grupo[]     @relation("grupo_exercicio5Toexercicio")
+  grupo_grupo_exercicio6Toexercicio grupo[]     @relation("grupo_exercicio6Toexercicio")
+  grupo_grupo_exercicio7Toexercicio grupo[]     @relation("grupo_exercicio7Toexercicio")
+}
+
+model grupo {
+  id                                    Int        @id(map: "grupo_pk") @default(autoincrement())
+  treinoId                              Int
+  day                                   days?
+  exercicio1                            Int
+  exercicio2                            Int
+  exercicio3                            Int
+  exercicio4                            Int
+  exercicio5                            Int?
+  exercicio6                            Int?
+  exercicio7                            Int?
+  treino                                treino     @relation(fields: [treinoId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk0")
+  exercicio_grupo_exercicio1Toexercicio exercicio  @relation("grupo_exercicio1Toexercicio", fields: [exercicio1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk2")
+  exercicio_grupo_exercicio2Toexercicio exercicio  @relation("grupo_exercicio2Toexercicio", fields: [exercicio2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk3")
+  exercicio_grupo_exercicio3Toexercicio exercicio  @relation("grupo_exercicio3Toexercicio", fields: [exercicio3], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk4")
+  exercicio_grupo_exercicio4Toexercicio exercicio  @relation("grupo_exercicio4Toexercicio", fields: [exercicio4], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk5")
+  exercicio_grupo_exercicio5Toexercicio exercicio? @relation("grupo_exercicio5Toexercicio", fields: [exercicio5], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk6")
+  exercicio_grupo_exercicio6Toexercicio exercicio? @relation("grupo_exercicio6Toexercicio", fields: [exercicio6], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk7")
+  exercicio_grupo_exercicio7Toexercicio exercicio? @relation("grupo_exercicio7Toexercicio", fields: [exercicio7], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "grupo_fk8")
+}
+
+model musculatura {
+  id        Int         @id(map: "musculatura_pk") @default(autoincrement())
+  name      String      @unique @db.VarChar(255)
+  image     String
+  exercicio exercicio[]
+}
+
+model treino {
+  id        Int     @id(map: "treino_pk") @default(autoincrement())
+  userId    Int
+  divisaoId Int
+  grupo     grupo[]
+  user      user    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "treino_fk0")
+  divisao   divisao @relation(fields: [divisaoId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "treino_fk1")
+}
+
+model user {
+  id       Int      @id(map: "user_pk") @default(autoincrement())
+  nome     String   @db.VarChar(255)
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
+  idade    Int
+  altura   Int
+  peso     Int
+  treino   treino[]
+}
+
+enum days {
+  A
+  B
+  C
+  D
+  E
+}
